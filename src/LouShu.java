@@ -9,7 +9,7 @@ public class LouShu extends AIgame {
 
 	public static void main(String[] args) {
 		
-	};
+	}
 	
 	static int originalGrid[][];
 	static double arraySize;
@@ -105,6 +105,11 @@ public class LouShu extends AIgame {
 		return isValid;
 	}
 
+	
+	/** 
+	 * Aigame takes in the file path and puts it into an array
+	 * 
+	 */
 	public void AiGame(String filepath) throws FileNotFoundException {
 		
 		ArrayList <Integer> filenums = new ArrayList<Integer>();
@@ -128,7 +133,7 @@ public class LouShu extends AIgame {
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid.length; j++) {
 				grid[i][j] = filenums.get(count);
-				originalGrid[i][j] = grid[i][j];
+				originalGrid[i][j] = grid[i][j];// setting the reset grid
 				count++;
 			}
 			
@@ -138,7 +143,7 @@ public class LouShu extends AIgame {
 
 	@Override
 	protected int[][] solve() {
-		Random rand = new Random();
+		Random rand = new Random();// random number initialization
 		int randomnum;
 		while(isValid == false) {
 		ArrayList <Integer> dictionary = new ArrayList <Integer>();
@@ -172,15 +177,20 @@ public class LouShu extends AIgame {
 				}
 			}
 			}
+		
+		// find the total of the first row
 		firstRow = 0;
 			for (int j = 0; j < grid.length; j++) {
-				firstRow += grid[1][j];
+				firstRow += grid[0][j];
 			}
 		
 		if (rowTest(grid) == true && columnTest(grid) == true 
 				&& leftToRight(grid) == true && rightToLeft(grid) == true) {
 			isValid = true;
 		}
+		
+		
+		// resetting the grid
 		if (isValid == false) {
 			for(int i = 0; i< grid.length; i++) {
 				for (int j =0; j < grid.length; j++) {
@@ -203,6 +213,7 @@ public class LouShu extends AIgame {
 		String currentnum;
 		String fullarray = "";
 		
+		//puts the array into a single string
 		for (int i = 0; i < grid.length; i++) {
 			fullarray = fullarray + "\n";
 			for (int j = 0; j < grid.length; j++) {
@@ -213,7 +224,7 @@ public class LouShu extends AIgame {
 		}
 		System.out.printf(fullarray);
 		
-		return null;
+		return fullarray;
 	}
 
 }
