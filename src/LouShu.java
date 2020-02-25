@@ -181,7 +181,13 @@ public class LouShu extends AIgame {
 				&& leftToRight(grid) == true && rightToLeft(grid) == true) {
 			isValid = true;
 		}
-		
+		if (isValid == false) {
+			for(int i = 0; i< grid.length; i++) {
+				for (int j =0; j < grid.length; j++) {
+					grid[i][j] = originalGrid[i][j];
+				}
+			}
+		}
 		}
 		
 			
@@ -189,9 +195,23 @@ public class LouShu extends AIgame {
 	}
 
 	@Override
+	/**
+	 * Changes the array into a printable string
+	 * 
+	 */
 	public String toString() {
+		String currentnum;
+		String fullarray = "";
 		
-		
+		for (int i = 0; i < grid.length; i++) {
+			fullarray = fullarray + "\n";
+			for (int j = 0; j < grid.length; j++) {
+				currentnum = Integer.toString(grid[i][j]);
+				fullarray = fullarray + currentnum;
+				fullarray = fullarray + " ";
+			}
+		}
+		System.out.printf(fullarray);
 		
 		return null;
 	}
