@@ -3,50 +3,28 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.lang.Math;
+import java.util.Random;
 
 public class LouShu extends AIgame {
 
-	public void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) {
 		
-		String path = args[0];
-		AiGame(path);
-
 	};
 	
+	static int originalGrid[][];
 	static double arraySize;
 	static int firstRow = 0;
+	
 	/**
 	 * this sets the box that holds the numbers
 	 * @return integer array
+	 * @throws FileNotFoundException 
 	 */
-	
-	public static int[][] setbox(){
-		// sets the size of the array
-		int [][] grid = new int[(int) arraySize][(int)arraySize];
-		String input = "";
-		
-		for (int i = 0; i < input.length(); i++) {
-			char output = input.charAt(i);
-			
-			// changes the character to a number
-			int applied = Character.getNumericValue(output);
-			
-			for (int row = 0; row < arraySize; row++) {
-				for(int column = 0; column < arraySize; column++) {
-					if (column == (i - row*arraySize)) {
-						grid[row][column] = applied;
-					}
-					
-				}
-			}
-			
-		}
-		
-		
-		
-		return grid;
+	public LouShu (String filePath) throws FileNotFoundException {
+		AiGame(filePath);
+		solve();
+		toString();
 	}
-	
 	/**
 	 * this test the rows to see if they are equal to the first row
 	 * @param array that includes all the numbers
@@ -58,12 +36,12 @@ public class LouShu extends AIgame {
 			for (int column = 0; column < arraySize; column++) {
 				currentRow += array[row][column];
 			}
-			if (currentRow != firstRow) {
+			if (currentRow == firstRow) {
+				isValid = true;
+			}else
 				isValid = false;
-			}
 		}
 		return isValid;
-		
 	}
 	
 	
@@ -78,9 +56,10 @@ public class LouShu extends AIgame {
 			for (int row = 0; row < arraySize; row++) {
 				currentColumn += array[row][column];
 			}
-			if (currentColumn != firstRow) {
+			if (currentColumn == firstRow) {
+				isValid = true;
+			}else
 				isValid = false;
-			}
 		}
 		return isValid;
 	}
@@ -97,11 +76,11 @@ public class LouShu extends AIgame {
 			total += array[row][column];
 			column++;
 		}
-		if (total != firstRow) {
+		if (total == firstRow) {
+			isValid = true;
+		}else
 			isValid = false;
-		}
 		return isValid;
-		
 	}
 	
 	/**
@@ -118,41 +97,102 @@ public class LouShu extends AIgame {
 			total += array[row][column];
 			column--;
 		}
-		if (total != firstRow) {
+		if (total == firstRow) {
+			isValid = true;
+		}else 
 			isValid = false;
-		}
+		
 		return isValid;
 	}
 
-	@Override
 	public void AiGame(String filepath) throws FileNotFoundException {
 		
-		ArrayList <Integer> filenums = new ArrayList();
+		ArrayList <Integer> filenums = new ArrayList<Integer>();
 		String path = filepath;
 		File filereader = new File(path);//setting the file that will  be used
 		Scanner reader = new Scanner(filereader);
 		
+		//reads in the integers and saves them to an array list
 		while (reader.hasNextInt()) {
 			
 			filenums.add(reader.nextInt());
 		}
 		
+		reader.close();
+		// finds the size the array needs to be
 		arraySize = Math.sqrt(filenums.size());
-		System.out.println(arraySize);
 		
+		grid = new int[(int) arraySize][(int) arraySize];
+		originalGrid = new int[(int) arraySize][(int) arraySize];
+		int count = 0;
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid.length; j++) {
+				grid[i][j] = filenums.get(count);
+				originalGrid[i][j] = grid[i][j];
+				count++;
+			}
+			
+		}
 		
 	}
 
 	@Override
 	protected int[][] solve() {
+		Random rand = new Random();
+		int randomnum;
+		while(isValid == false) {
+		ArrayList <Integer> dictionary = new ArrayList <Integer>();
 		
+		//setting the dictionary
+		for (int i = 0; i < (arraySize*arraySize); i++) {
+			dictionary.add(i+1);
+		}
 		
-		return null;
+		//pulls all the already used numbers out of the list
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid.length; j++) {
+				
+				for (int l = 0; l < dictionary.size(); l++) {
+					if (dictionary.get(l) == grid[i][j])
+						dictionary.remove(l);
+				}
+				
+			}
+			
+		}
+		//chooses a number from the dictionary at random and places
+		//it in the array
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid.length; j++) {
+				
+				if (grid[i][j] == 0) {
+					randomnum = rand.nextInt(dictionary.size());
+					grid[i][j] = dictionary.get(randomnum);
+					dictionary.remove(randomnum);
+				}
+			}
+			}
+		firstRow = 0;
+			for (int j = 0; j < grid.length; j++) {
+				firstRow += grid[1][j];
+			}
+		
+		if (rowTest(grid) == true && columnTest(grid) == true 
+				&& leftToRight(grid) == true && rightToLeft(grid) == true) {
+			isValid = true;
+		}
+		
+		}
+		
+			
+		return grid;
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
+		
+		
+		
 		return null;
 	}
 

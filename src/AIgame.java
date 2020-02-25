@@ -6,10 +6,11 @@ public abstract class AIgame {
 
  protected static boolean isValid = false;
  
- public void main(String[] args) throws FileNotFoundException{
+ public static  void main(String[] args) throws FileNotFoundException {
 	 
- };
- 
+	 String filepath = args[0];
+	 new LouShu(filepath);
+ } 
  public abstract void AiGame(String filepath) throws FileNotFoundException;
  
  protected abstract int[][] solve();
