@@ -154,40 +154,17 @@ protected int[][] solve() {
 			for (int j = 0; j < grid.length; j++) {
 				
 				if (grid[i][j] == 0) {
-					
-					for (int row = 0; row < grid.length; row++) {
-						for (int l = 0; l < dictionary.size(); l++) {
-							if (grid[row][j] == dictionary.get(l)) {
-								dictionary.remove(l);
-							}
-						}
-						
-					}
-					
-					for (int col = 0; col < grid.length; col++) {
-						for (int l = 0; l < dictionary.size(); l++) {
-							if (grid[i][col] == dictionary.get(l)) {
-								dictionary.remove(l);
-							}
-						}
-						
-					}
-					
-					if (dictionary.size() > 0) {
-						randomnum = rand.nextInt(dictionary.size());
-						grid[i][j] = dictionary.get(randomnum);
-						
-					}else
-						break;
-					
-				}
+					randomnum = rand.nextInt(dictionary.size());
+					grid[i][j] = dictionary.get(randomnum);
 			}
 			}
+		}
+		
+	System.out.println(gridcount);
 		if(isRowValid() == true && isColumnValid() == true && isSubgridValid() == true) {
 			isValid = true;
 		}
 		if (isValid == false) {
-			System.out.println(gridcount);
 			for(int i = 0; i< grid.length; i++) {
 				for (int j =0; j < grid.length; j++) {
 
